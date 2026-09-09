@@ -1,6 +1,7 @@
-   const server = {
-       dev: "http://localhost:8000",
-       prod: "https://sigmameet.onrender.com"
-   }
+ const isLocalhost = window.location.hostname === "localhost";
 
-   export default server;
+const server = isLocalhost
+    ? "http://localhost:8000"
+    : "https://sigmameet.onrender.com";
+
+export default server; 
