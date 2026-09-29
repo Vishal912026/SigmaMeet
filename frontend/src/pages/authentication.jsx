@@ -59,14 +59,14 @@ export default function Authentication() {
           setPassword("")
         }
       } catch (err) {
-          let message = (err.response.data.message);
-          setError(message);
+                  let message = err.response?.data?.message || "Unable to connect to the server. Please try again in a moment.";
+        setError(message);
       }
      }
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Grid container component="main" sx={{ height: '100vh' }}>
+             <Grid container component="main" sx={{ minHeight: '100vh' }}>
         <CssBaseline />
         <Grid
               size={{ xs: false, sm: 4, md: 7 }}

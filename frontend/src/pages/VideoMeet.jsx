@@ -38,7 +38,9 @@ export default function VideoMeetComponent() {
 
     let [screen, setScreen] = useState();
 
-    let [showModal, setModal] = useState(true);
+    let [showModal, setModal] = useState(window.innerWidth > 768);
+
+    let [mediaProblem, setMediaProblem] = useState("");
 
     let [screenAvailable, setScreenAvailable] = useState();
 
@@ -62,38 +64,51 @@ export default function VideoMeetComponent() {
 
     // }
     const getPermissions = async () => {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            setVideoAvailable(false);
+            setAudioAvailable(false);
+            setMediaProblem("Camera/mic is not supported in this browser. Please open the link in Chrome.");
+            return;
+        }
+
+        setScreenAvailable(!!navigator.mediaDevices.getDisplayMedia);
+
+        let stream = null;
+        let firstError = "";
+
         try {
-            const videoPermission = await navigator.mediaDevices.getUserMedia({ video: true });
-            if (videoPermission) {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            setVideoAvailable(true);
+            setAudioAvailable(true);
+        } catch (e) {
+            console.log(e);
+            firstError = e.name || "Error";
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
                 setVideoAvailable(true);
-            } else {
-                setVideoAvailable(false);
-            }
-
-            const audioPermission = await navigator.mediaDevices.getUserMedia({ audio: true });
-            if (audioPermission) {
-                setAudioAvailable(true);
-            } else {
                 setAudioAvailable(false);
-            }
-
-            if (navigator.mediaDevices.getDisplayMedia) {
-                setScreenAvailable(true);
-            } else {
-                setScreenAvailable(false);
-            }
-
-            if (videoAvailable || audioAvailable) {
-                const userMediaStream = await navigator.mediaDevices.getUserMedia({ video: videoAvailable, audio: audioAvailable });
-                if (userMediaStream) {
-                    window.localStream = userMediaStream;
-                    if (localVideoref.current) {
-                        localVideoref.current.srcObject = userMediaStream;
-                    }
+                setMediaProblem("Microphone not available (" + firstError + "). Video only.");
+            } catch (e2) {
+                console.log(e2);
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    setVideoAvailable(false);
+                    setAudioAvailable(true);
+                    setMediaProblem("Camera not available (" + (e2.name || firstError) + "). Audio only.");
+                } catch (e3) {
+                    console.log(e3);
+                    setVideoAvailable(false);
+                    setAudioAvailable(false);
+                    setMediaProblem("Camera/microphone access denied (" + (e3.name || firstError) + "). Please allow permission in your browser or open the link in Chrome.");
                 }
             }
-        } catch (error) {
-            console.log(error);
+        }
+
+        if (stream) {
+            window.localStream = stream;
+            if (localVideoref.current) {
+                localVideoref.current.srcObject = stream;
+            }
         }
     };
 
@@ -409,6 +424,13 @@ useEffect(() => {
 }, [screen])
 
 
+useEffect(() => {
+    if (!askForUsername && localVideoref.current && window.localStream) {
+        localVideoref.current.srcObject = window.localStream;
+    }
+}, [askForUsername])
+
+
 let connect = () => {
     setAskForUsername(false);
     getMedia();
@@ -420,14 +442,18 @@ return (
 
         {askForUsername === true ?
 
-            <div>
+            <div className={styles.lobbyContainer}>
                 <h2>Enter into Lobby</h2>
 
-                <TextField id="outlined-basic" label="Username" value={username} onChange={e => setUsername(e.target.value)} variant="outlined" />
-                <Button variant="contained" onClick={connect}>Connect</Button>
+                <div className={styles.lobbyForm}>
+                    <TextField id="outlined-basic" label="Username" value={username} onChange={e => setUsername(e.target.value)} variant="outlined" />
+                    <Button variant="contained" onClick={connect}>Connect</Button>
+                </div>
+
+                {mediaProblem !== "" ? <p className={styles.mediaProblem}>{mediaProblem}</p> : <></>}
 
                 <div>
-                    <video ref={localVideoref} autoPlay muted></video>
+                    <video ref={localVideoref} className={styles.lobbyVideo} autoPlay muted playsInline></video>
                 </div>
 
             </div> :
@@ -475,13 +501,13 @@ return (
                         </IconButton> : <></>}
 
                     <Badge badgeContent={newMessages} max={999} color='secondary'>
-                        <IconButton onClick={() => setModal(!showModal)} style={{ color: "white" }}>
+                                               <IconButton onClick={() => setModal(!showModal)} style={{ color: "white" }}>
                             <ChatIcon />
                         </IconButton>
                     </Badge>
                 </div>
 
-                <video className={styles.meetUserVideo} ref={localVideoref} autoPlay muted></video>
+                <video className={styles.meetUserVideo} ref={localVideoref} autoPlay muted playsInline></video>
 
                 <div className={styles.conferenceView}>
                     {videos.map((video) => (
@@ -494,6 +520,7 @@ return (
                                    }
                                   }}
                                 autoPlay
+                                playsInline
                             >
                             </video>
                         </div>
@@ -507,6 +534,3 @@ return (
 
 
 }
-
-
- 

@@ -57,4 +57,87 @@
 .chattingArea {
     position: absolute;
     bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 12px;
+}
+
+.chattingArea > div {
+    flex: 1;
+}
+
+.chattingDisplay {
+    max-height: calc(100% - 150px);
+    overflow-y: auto;
+    word-break: break-word;
+}
+
+.lobbyContainer {
+    padding: 16px;
+}
+
+.lobbyForm {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: 12px 0;
+}
+
+.lobbyVideo {
+    width: 100%;
+    max-width: 480px;
+    border-radius: 12px;
+    background: #000;
+    margin-top: 12px;
+}
+
+.mediaProblem {
+    color: #d32f2f;
+    margin: 8px 0;
+    font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+    .meetVideoContainer {
+        height: 100vh;
+        height: 100dvh;
+        overflow: hidden;
+    }
+
+    .buttonContainers {
+        z-index: 20;
+        width: 100%;
+    }
+
+    .buttonContainers svg {
+        font-size: 2.2rem;
+    }
+
+    .meetUserVideo {
+        height: 16vh;
+        bottom: 12vh;
+        max-width: 45vw;
+    }
+
+    .conferenceView {
+        max-height: calc(100% - 70px);
+        overflow-y: auto;
+    }
+
+    .conferenceView video {
+        width: 44vw;
+        height: 18vh;
+    }
+
+    .chatRoom {
+        z-index: 10;
+        width: 100%;
+        height: calc(100% - 64px);
+        border-radius: 0;
+        padding-inline: 12px;
+    }
 }
