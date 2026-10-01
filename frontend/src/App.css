@@ -175,6 +175,99 @@ width: auto;
   }
 }
 
+video {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .landingPageContainer {
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .landingPageContainer nav {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 1rem;
+  }
+
+  .landingPageContainer nav h2 {
+    font-size: 1.4rem;
+  }
+
+  .landingPageContainer nav .navlist {
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .landingMainContainer {
+    flex-direction: column;
+    height: auto;
+    padding: 1rem 1.5rem 2rem;
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .landingMainContainer > div:nth-child(1) {
+    font-size: 1.3rem;
+    width: 100%;
+  }
+
+  .landingMainContainer > div:nth-child(1) div[role='button'] {
+    margin-inline: auto;
+  }
+
+  .landingMainContainer > div:nth-child(1) div[role='button'] a {
+    font-size: 1.2rem;
+  }
+
+  .landingMainContainer > div:nth-child(2) img {
+    display: block;
+    margin: 0 auto;
+    height: auto;
+    width: 70%;
+    max-height: 45vh;
+    object-fit: contain;
+  }
+
+  .navBar {
+    flex-wrap: wrap;
+    padding-inline: 12px;
+  }
+
+  .navBar h2 {
+    font-size: 1.1rem;
+  }
+
+  .meetContainer {
+    flex-direction: column;
+    height: auto;
+    gap: 24px;
+    padding: 16px;
+  }
+
+  .leftPanel {
+    height: auto;
+  }
+
+  .leftPanel h2 {
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+  }
+
+  .rightPanel {
+    justify-content: center;
+  }
+
+  .rightPanel > img {
+    width: 70%;
+  }
+}
+
 
 
 
