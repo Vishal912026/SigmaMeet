@@ -418,6 +418,12 @@ let sendMessage = () => {
 }
 
 useEffect(() => {
+    if (showModal) {
+        setNewMessages(0);
+    }
+}, [showModal, messages]);
+
+useEffect(() => {
     if (screen !== undefined) {
         getDislayMedia();
     }
