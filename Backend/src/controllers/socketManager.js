@@ -27,19 +27,11 @@ export const connectToSocket = (server) => {
         
         timeOnline[socket.id] = new Date();
       
-      //   connections[path].forEach(elem => {
-      //    io.to
-      //   })
+      
      for(let a = 0; a < connections[path].length; a++) {
       io.to(connections[path][a]).emit("user-joined", socket.id, connections[path])
      }
 
-     if(messages[path] !== undefined) {
-        for (let a = 0; a < messages[path].length; ++a) {
-         io.to(socket.id).emit("chat-message", messages[path][a]['data'],
-            messages[path][a]['sender'], messages[path][a]['socket-id-sender'])
-        }
-     }
 
      }) 
      
@@ -99,10 +91,10 @@ export const connectToSocket = (server) => {
             
               connections[key].splice(index, 1)           
               
-              if (connections[key].length === 0) {
+                         if (connections[key].length === 0) {
                delete connections[key]
+               delete messages[key]
               }
-               
             }
          }
       }
