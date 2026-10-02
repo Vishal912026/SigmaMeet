@@ -204,3 +204,23 @@
         flex: 1;
     }
 }
+
+
+@media (max-width: 768px) {
+    .chatRoom {
+        top: auto;
+        bottom: 64px;
+        height: 50%;
+        border-radius: 16px 16px 0 0;
+        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.35);
+    }
+
+    .chatRoom h1 {
+        font-size: 1.3rem;
+        margin: 10px 0 6px;
+    }
+
+    .chattingDisplay {
+        max-height: calc(100% - 90px);
+    }
+}
